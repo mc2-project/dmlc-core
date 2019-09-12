@@ -191,7 +191,7 @@ class RabitTracker(object):
         return tree_map, parent_map
 
     def get_star(self, nslave):
-                tree_map = {}
+        tree_map = {}
         parent_map = {}
         for r in range(nslave):
             tree_map[r] = [0] if r != 0 else [worker for worker in range(1, nslave)]
