@@ -72,7 +72,6 @@ def submit(args):
             pool.close()
             pool.join()
             
-
         # launch jobs
         for i in range(nworker + nserver):
             pass_envs['DMLC_ROLE'] = 'server' if i < nserver else 'worker'

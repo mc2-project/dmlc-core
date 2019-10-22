@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+// Compile with -> python -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. ./fxgb.proto
+
+message Job {
+    message Env {
+        string DMLC_TRACKER_URI = 1;
+        int32 DMLC_TRACKER_PORT = 2;
+        string DMLC_ROLE = 3;
+        string DMLC_NODE_HOST = 4;
+        int32 DMLC_NUM_WORKER = 5;
+        int32 DMLC_NUM_SERVER = 6;
+    }
+    string cmd = 1;  // Full command to be run.
+    Env env = 2;     // environment
+}
+
+message WorkerResponse {
+    bool accepted_job = 1;  // True if worker accepted the job, else False.
+}
+
+service FXGBWorker {
+    rpc StartJob(Job) returns (WorkerResponse) {}
+}
