@@ -127,7 +127,7 @@
  *  Used to disable some module in mingw compile.
  */
 #ifndef __ENCLAVE__
-// FIXME Can we enabe this?
+// FIXME enable threads
 #ifndef DMLC_ENABLE_STD_THREAD
 #define DMLC_ENABLE_STD_THREAD DMLC_USE_CXX11
 #endif

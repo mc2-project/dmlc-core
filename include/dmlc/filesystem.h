@@ -135,7 +135,7 @@ class TemporaryDirectory {
    */
   inline bool IsSymlink(const std::string& path) {
 #ifdef __SGX__
-    // FIXME 
+    // FIXME enable function
     return false;
 #else
 #ifdef _WIN32
