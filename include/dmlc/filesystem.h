@@ -134,8 +134,7 @@ class TemporaryDirectory {
    * \param path String representation of path
    */
   inline bool IsSymlink(const std::string& path) {
-#ifdef __SGX__
-    // FIXME enable function
+#ifdef __SGX__ // FIXME enable function
     return false;
 #else
 #ifdef _WIN32
