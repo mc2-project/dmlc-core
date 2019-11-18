@@ -3,8 +3,6 @@ Script run by worker machines to start listening for RPCs.
 gRPC Worker API
 
 usage - python3 grpc_worker.py <PORT> <PATH_TO_DATA>
-
-export DMLC_TRACKER_URI='10.100.216.229'; export DMLC_TRACKER_PORT='9091'; export DMLC_ROLE='worker';export DMLC_NODE_HOST='localhost';export DMLC_NUM_WORKER='2';export DMLC_NUM_SERVER='0';python3 ../../../dmlc-core/tracker/dmlc_tracker/grpc_worker.py 50051 ../data/partition_2_train.csv;
 '''
 from concurrent import futures
 
@@ -15,10 +13,6 @@ import fxgb_pb2_grpc
 import grpc
 
 import ctypes
-import multiprocessing
-import os
-import shlex
-import subprocess
 import sys
 
 import pandas as pd
@@ -34,7 +28,7 @@ def get_dmlc_vars(env):
         env - Env protobuf
     
     Return:
-        list containing new environment variables
+        list containing DMLC variables
     '''
     temp = [
         'DMLC_TRACKER_URI='+env.DMLC_TRACKER_URI,
@@ -47,6 +41,7 @@ def get_dmlc_vars(env):
     # Python strings are unicode, but C strings are bytes, so we must convert to bytes.
     return [bytes(s, 'utf-8') for s in temp]
 
+
 class FederatedXGBoostServicer():
     ''' gRPC servicer class which implements worker machine RPCs API. '''
     
@@ -58,26 +53,7 @@ class FederatedXGBoostServicer():
         print("Started up FXGB worker. Now listening on port %s for RPC to start job." % self.port)
 
     def StartJob(self, request, context):
-        '''
-        Runs a script, specified by the aggregator, on this worker machine.
-        '''
-        print('Request from aggregator to run this job:', request.cmd)
-        print('Session password is:', request.password)
-        accept_job = input("Run this job? [Y/N]: ")
-        while accept_job not in {'Y', 'N'}:
-            print("Please enter 'Y' to confirm or 'N' to reject.")
-            accept_job = input("Run this job? [Y/N]: ")
-        
-        if accept_job == 'Y':
-            try:
-                args = shlex.split(request.cmd) + [self.data_path]
-                env = update_env_vars(request.env)
-                subprocess.Popen(args, env=env)
-                return fxgb_pb2.WorkerResponse(success=True)
-            except:
-                return fxgb_pb2.WorkerResponse(success=False)
-        else:
-            return fxgb_pb2.WorkerResponse(success=False)
+        pass
 
     def Init(self, request, context):
         '''
@@ -115,12 +91,12 @@ class FederatedXGBoostServicer():
         data, label = dataset.iloc[:, 1:], dataset.iloc[:, 0]
         dtrain = xgb.DMatrix(data, label=label)
         print('Dataset loaded.')
-        param = {}     # doesnt matter?
-        num_round = 10 # doesnt matter?
+        param = {}     
+        num_round = 10 
         print('Starting training...')
         model = xgb.train(param, dtrain, num_round)
         print('Training finished.')
-        # save model
+        # model.save_model(self.model_path)
         xgb.rabit.finalize()
 
 
@@ -128,8 +104,8 @@ class FederatedXGBoostServicer():
 def start_worker(port, data_path):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
     fxgb_pb2_grpc.add_FXGBWorkerServicer_to_server(FederatedXGBoostServicer(port, data_path), server)
-
-    server_credentials = grpc.ssl_server_credentials(((_credentials.SERVER_CERTIFICATE_KEY, _credentials.SERVER_CERTIFICATE),))
+    server_credentials = grpc.ssl_server_credentials(
+        ((_credentials.SERVER_CERTIFICATE_KEY, _credentials.SERVER_CERTIFICATE),))
     server.add_secure_port('[::]:' + port, server_credentials)
 
     server.start()

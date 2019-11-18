@@ -20,56 +20,56 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nfxgb.proto\"\xc3\x01\n\x03Job\x12\x0b\n\x03\x63md\x18\x01 \x01(\t\x12\x15\n\x03\x65nv\x18\x02 \x01(\x0b\x32\x08.Job.Env\x1a\x97\x01\n\x03\x45nv\x12\x18\n\x10\x44MLC_TRACKER_URI\x18\x01 \x01(\t\x12\x19\n\x11\x44MLC_TRACKER_PORT\x18\x02 \x01(\x05\x12\x11\n\tDMLC_ROLE\x18\x03 \x01(\t\x12\x16\n\x0e\x44MLC_NODE_HOST\x18\x04 \x01(\t\x12\x17\n\x0f\x44MLC_NUM_WORKER\x18\x05 \x01(\x05\x12\x17\n\x0f\x44MLC_NUM_SERVER\x18\x06 \x01(\x05\"&\n\x0eWorkerResponse\x12\x14\n\x0c\x61\x63\x63\x65pted_job\x18\x01 \x01(\x08\x32\x31\n\nFXGBWorker\x12#\n\x08StartJob\x12\x04.Job\x1a\x0f.WorkerResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nfxgb.proto\"\x97\x01\n\x03\x45nv\x12\x18\n\x10\x44MLC_TRACKER_URI\x18\x01 \x01(\t\x12\x19\n\x11\x44MLC_TRACKER_PORT\x18\x02 \x01(\x05\x12\x11\n\tDMLC_ROLE\x18\x03 \x01(\t\x12\x16\n\x0e\x44MLC_NODE_HOST\x18\x04 \x01(\t\x12\x17\n\x0f\x44MLC_NUM_WORKER\x18\x05 \x01(\x05\x12\x17\n\x0f\x44MLC_NUM_SERVER\x18\x06 \x01(\x05\"C\n\x0fStartJobRequest\x12\x0b\n\x03\x63md\x18\x01 \x01(\t\x12\x11\n\x03\x65nv\x18\x02 \x01(\x0b\x32\x04.Env\x12\x10\n\x08password\x18\x03 \x01(\t\" \n\x0bInitRequest\x12\x11\n\x03\x65nv\x18\x01 \x01(\x0b\x32\x04.Env\"\x0e\n\x0cTrainRequest\"!\n\x0eWorkerResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x91\x01\n\nFXGBWorker\x12/\n\x08StartJob\x12\x10.StartJobRequest\x1a\x0f.WorkerResponse\"\x00\x12\'\n\x04Init\x12\x0c.InitRequest\x1a\x0f.WorkerResponse\"\x00\x12)\n\x05Train\x12\r.TrainRequest\x1a\x0f.WorkerResponse\"\x00\x62\x06proto3')
 )
 
 
 
 
-_JOB_ENV = _descriptor.Descriptor(
+_ENV = _descriptor.Descriptor(
   name='Env',
-  full_name='Job.Env',
+  full_name='Env',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='DMLC_TRACKER_URI', full_name='Job.Env.DMLC_TRACKER_URI', index=0,
+      name='DMLC_TRACKER_URI', full_name='Env.DMLC_TRACKER_URI', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_TRACKER_PORT', full_name='Job.Env.DMLC_TRACKER_PORT', index=1,
+      name='DMLC_TRACKER_PORT', full_name='Env.DMLC_TRACKER_PORT', index=1,
       number=2, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_ROLE', full_name='Job.Env.DMLC_ROLE', index=2,
+      name='DMLC_ROLE', full_name='Env.DMLC_ROLE', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NODE_HOST', full_name='Job.Env.DMLC_NODE_HOST', index=3,
+      name='DMLC_NODE_HOST', full_name='Env.DMLC_NODE_HOST', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NUM_WORKER', full_name='Job.Env.DMLC_NUM_WORKER', index=4,
+      name='DMLC_NUM_WORKER', full_name='Env.DMLC_NUM_WORKER', index=4,
       number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NUM_SERVER', full_name='Job.Env.DMLC_NUM_SERVER', index=5,
+      name='DMLC_NUM_SERVER', full_name='Env.DMLC_NUM_SERVER', index=5,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -87,35 +87,43 @@ _JOB_ENV = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=59,
-  serialized_end=210,
+  serialized_start=15,
+  serialized_end=166,
 )
 
-_JOB = _descriptor.Descriptor(
-  name='Job',
-  full_name='Job',
+
+_STARTJOBREQUEST = _descriptor.Descriptor(
+  name='StartJobRequest',
+  full_name='StartJobRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='cmd', full_name='Job.cmd', index=0,
+      name='cmd', full_name='StartJobRequest.cmd', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='env', full_name='Job.env', index=1,
+      name='env', full_name='StartJobRequest.env', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='password', full_name='StartJobRequest.password', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_JOB_ENV, ],
+  nested_types=[],
   enum_types=[
   ],
   serialized_options=None,
@@ -124,8 +132,63 @@ _JOB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15,
-  serialized_end=210,
+  serialized_start=168,
+  serialized_end=235,
+)
+
+
+_INITREQUEST = _descriptor.Descriptor(
+  name='InitRequest',
+  full_name='InitRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='env', full_name='InitRequest.env', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=237,
+  serialized_end=269,
+)
+
+
+_TRAINREQUEST = _descriptor.Descriptor(
+  name='TrainRequest',
+  full_name='TrainRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=271,
+  serialized_end=285,
 )
 
 
@@ -137,7 +200,7 @@ _WORKERRESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='accepted_job', full_name='WorkerResponse.accepted_job', index=0,
+      name='success', full_name='WorkerResponse.success', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -155,30 +218,46 @@ _WORKERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=212,
-  serialized_end=250,
+  serialized_start=287,
+  serialized_end=320,
 )
 
-_JOB_ENV.containing_type = _JOB
-_JOB.fields_by_name['env'].message_type = _JOB_ENV
-DESCRIPTOR.message_types_by_name['Job'] = _JOB
+_STARTJOBREQUEST.fields_by_name['env'].message_type = _ENV
+_INITREQUEST.fields_by_name['env'].message_type = _ENV
+DESCRIPTOR.message_types_by_name['Env'] = _ENV
+DESCRIPTOR.message_types_by_name['StartJobRequest'] = _STARTJOBREQUEST
+DESCRIPTOR.message_types_by_name['InitRequest'] = _INITREQUEST
+DESCRIPTOR.message_types_by_name['TrainRequest'] = _TRAINREQUEST
 DESCRIPTOR.message_types_by_name['WorkerResponse'] = _WORKERRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Job = _reflection.GeneratedProtocolMessageType('Job', (_message.Message,), {
-
-  'Env' : _reflection.GeneratedProtocolMessageType('Env', (_message.Message,), {
-    'DESCRIPTOR' : _JOB_ENV,
-    '__module__' : 'fxgb_pb2'
-    # @@protoc_insertion_point(class_scope:Job.Env)
-    })
-  ,
-  'DESCRIPTOR' : _JOB,
+Env = _reflection.GeneratedProtocolMessageType('Env', (_message.Message,), {
+  'DESCRIPTOR' : _ENV,
   '__module__' : 'fxgb_pb2'
-  # @@protoc_insertion_point(class_scope:Job)
+  # @@protoc_insertion_point(class_scope:Env)
   })
-_sym_db.RegisterMessage(Job)
-_sym_db.RegisterMessage(Job.Env)
+_sym_db.RegisterMessage(Env)
+
+StartJobRequest = _reflection.GeneratedProtocolMessageType('StartJobRequest', (_message.Message,), {
+  'DESCRIPTOR' : _STARTJOBREQUEST,
+  '__module__' : 'fxgb_pb2'
+  # @@protoc_insertion_point(class_scope:StartJobRequest)
+  })
+_sym_db.RegisterMessage(StartJobRequest)
+
+InitRequest = _reflection.GeneratedProtocolMessageType('InitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _INITREQUEST,
+  '__module__' : 'fxgb_pb2'
+  # @@protoc_insertion_point(class_scope:InitRequest)
+  })
+_sym_db.RegisterMessage(InitRequest)
+
+TrainRequest = _reflection.GeneratedProtocolMessageType('TrainRequest', (_message.Message,), {
+  'DESCRIPTOR' : _TRAINREQUEST,
+  '__module__' : 'fxgb_pb2'
+  # @@protoc_insertion_point(class_scope:TrainRequest)
+  })
+_sym_db.RegisterMessage(TrainRequest)
 
 WorkerResponse = _reflection.GeneratedProtocolMessageType('WorkerResponse', (_message.Message,), {
   'DESCRIPTOR' : _WORKERRESPONSE,
@@ -195,15 +274,33 @@ _FXGBWORKER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=252,
-  serialized_end=301,
+  serialized_start=323,
+  serialized_end=468,
   methods=[
   _descriptor.MethodDescriptor(
     name='StartJob',
     full_name='FXGBWorker.StartJob',
     index=0,
     containing_service=None,
-    input_type=_JOB,
+    input_type=_STARTJOBREQUEST,
+    output_type=_WORKERRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Init',
+    full_name='FXGBWorker.Init',
+    index=1,
+    containing_service=None,
+    input_type=_INITREQUEST,
+    output_type=_WORKERRESPONSE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Train',
+    full_name='FXGBWorker.Train',
+    index=2,
+    containing_service=None,
+    input_type=_TRAINREQUEST,
     output_type=_WORKERRESPONSE,
     serialized_options=None,
   ),

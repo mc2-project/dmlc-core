@@ -1,24 +1,40 @@
 syntax = "proto3";
 
+// Compile with -> python -m grpc_tools.protoc -I=. --python_out=<_pb2 file out> --grpc_python_out=<_pb2_grpc file out> <path of this file>
+
 // Compile with -> python -m grpc_tools.protoc -I=. --python_out=. --grpc_python_out=. ./fxgb.proto
 
-message Job {
-    message Env {
-        string DMLC_TRACKER_URI = 1;
-        int32 DMLC_TRACKER_PORT = 2;
-        string DMLC_ROLE = 3;
-        string DMLC_NODE_HOST = 4;
-        int32 DMLC_NUM_WORKER = 5;
-        int32 DMLC_NUM_SERVER = 6;
-    }
-    string cmd = 1;  // Full command to be run.
-    Env env = 2;     // environment
+message Env {
+    string DMLC_TRACKER_URI = 1;
+    int32 DMLC_TRACKER_PORT = 2;
+    string DMLC_ROLE = 3;
+    string DMLC_NODE_HOST = 4;
+    int32 DMLC_NUM_WORKER = 5;
+    int32 DMLC_NUM_SERVER = 6;
 }
 
+// InitRequest proto to be used in Init RPC.
+message InitRequest {
+    Env env = 1;    // Environment variables.
+}
+
+// TrainRequest proto to be used in Train RPC.
+message TrainRequest {
+}
+
+// WorkerResponse that wraps boolean success/failure variable.
 message WorkerResponse {
-    bool accepted_job = 1;  // True if worker accepted the job, else False.
+    bool success = 1;  // True if success, else failure.
 }
 
 service FXGBWorker {
-    rpc StartJob(Job) returns (WorkerResponse) {}
+    // Run full script.
+    rpc StartJob(StartJobRequest) returns (WorkerResponse) {}
+
+    // Initialize rabit and environment variables.
+    // When client receives this RPC, it can accept or reject the federated training session.
+    rpc Init(InitRequest) returns (WorkerResponse) {} 
+
+    // Load data and train
+    rpc Train(TrainRequest) returns (WorkerResponse) {}
 }
