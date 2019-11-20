@@ -18,58 +18,58 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='fxgb.proto',
   package='',
-  syntax='proto3',
+  syntax='proto2',
   serialized_options=None,
-  serialized_pb=_b('\n\nfxgb.proto\"\x97\x01\n\x03\x45nv\x12\x18\n\x10\x44MLC_TRACKER_URI\x18\x01 \x01(\t\x12\x19\n\x11\x44MLC_TRACKER_PORT\x18\x02 \x01(\x05\x12\x11\n\tDMLC_ROLE\x18\x03 \x01(\t\x12\x16\n\x0e\x44MLC_NODE_HOST\x18\x04 \x01(\t\x12\x17\n\x0f\x44MLC_NUM_WORKER\x18\x05 \x01(\x05\x12\x17\n\x0f\x44MLC_NUM_SERVER\x18\x06 \x01(\x05\"C\n\x0fStartJobRequest\x12\x0b\n\x03\x63md\x18\x01 \x01(\t\x12\x11\n\x03\x65nv\x18\x02 \x01(\x0b\x32\x04.Env\x12\x10\n\x08password\x18\x03 \x01(\t\" \n\x0bInitRequest\x12\x11\n\x03\x65nv\x18\x01 \x01(\x0b\x32\x04.Env\"\x0e\n\x0cTrainRequest\"!\n\x0eWorkerResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x91\x01\n\nFXGBWorker\x12/\n\x08StartJob\x12\x10.StartJobRequest\x1a\x0f.WorkerResponse\"\x00\x12\'\n\x04Init\x12\x0c.InitRequest\x1a\x0f.WorkerResponse\"\x00\x12)\n\x05Train\x12\r.TrainRequest\x1a\x0f.WorkerResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nfxgb.proto\"\x9d\x01\n\tDMLC_VARS\x12\x18\n\x10\x44MLC_TRACKER_URI\x18\x01 \x02(\t\x12\x19\n\x11\x44MLC_TRACKER_PORT\x18\x02 \x02(\x05\x12\x11\n\tDMLC_ROLE\x18\x03 \x01(\t\x12\x16\n\x0e\x44MLC_NODE_HOST\x18\x04 \x01(\t\x12\x17\n\x0f\x44MLC_NUM_WORKER\x18\x05 \x02(\x05\x12\x17\n\x0f\x44MLC_NUM_SERVER\x18\x06 \x01(\x05\",\n\x0bInitRequest\x12\x1d\n\tdmlc_vars\x18\x01 \x01(\x0b\x32\n.DMLC_VARS\"\xa7\x04\n\x0cTrainRequest\x12\x0b\n\x03\x65ta\x18\x01 \x01(\x02\x12\r\n\x05gamma\x18\x02 \x01(\x02\x12\x11\n\tmax_depth\x18\x03 \x01(\x05\x12\x18\n\x10min_child_weight\x18\x04 \x01(\x02\x12\x16\n\x0emax_delta_step\x18\x05 \x01(\x02\x12\x11\n\tsubsample\x18\x1a \x01(\x02\x12\x18\n\x10\x63olsample_bytree\x18\x06 \x01(\x02\x12\x19\n\x11\x63olsample_bylevel\x18\x07 \x01(\x02\x12\x18\n\x10\x63olsample_bynode\x18\x08 \x01(\x02\x12\x0e\n\x06lambda\x18\t \x01(\x02\x12\r\n\x05\x61lpha\x18\n \x01(\x02\x12\x13\n\x0btree_method\x18\x0b \x01(\t\x12\x12\n\nsketch_eps\x18\x0c \x01(\x02\x12\x18\n\x10scale_pos_weight\x18\r \x01(\x02\x12\x0f\n\x07updater\x18\x0e \x01(\t\x12\x14\n\x0crefresh_leaf\x18\x0f \x01(\x05\x12\x14\n\x0cprocess_type\x18\x10 \x01(\t\x12\x13\n\x0bgrow_policy\x18\x11 \x01(\t\x12\x12\n\nmax_leaves\x18\x12 \x01(\x05\x12\x0f\n\x07max_bin\x18\x13 \x01(\x05\x12\x11\n\tpredictor\x18\x14 \x01(\t\x12\x19\n\x11num_parallel_tree\x18\x15 \x01(\x05\x12\x11\n\tobjective\x18\x16 \x01(\t\x12\x12\n\nbase_score\x18\x17 \x01(\x02\x12\x13\n\x0b\x65val_metric\x18\x18 \x01(\t\x12\x11\n\tnum_round\x18\x19 \x01(\x05\"!\n\x0eWorkerResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32`\n\nFXGBWorker\x12\'\n\x04Init\x12\x0c.InitRequest\x1a\x0f.WorkerResponse\"\x00\x12)\n\x05Train\x12\r.TrainRequest\x1a\x0f.WorkerResponse\"\x00')
 )
 
 
 
 
-_ENV = _descriptor.Descriptor(
-  name='Env',
-  full_name='Env',
+_DMLC_VARS = _descriptor.Descriptor(
+  name='DMLC_VARS',
+  full_name='DMLC_VARS',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='DMLC_TRACKER_URI', full_name='Env.DMLC_TRACKER_URI', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='DMLC_TRACKER_URI', full_name='DMLC_VARS.DMLC_TRACKER_URI', index=0,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_TRACKER_PORT', full_name='Env.DMLC_TRACKER_PORT', index=1,
-      number=2, type=5, cpp_type=1, label=1,
+      name='DMLC_TRACKER_PORT', full_name='DMLC_VARS.DMLC_TRACKER_PORT', index=1,
+      number=2, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_ROLE', full_name='Env.DMLC_ROLE', index=2,
+      name='DMLC_ROLE', full_name='DMLC_VARS.DMLC_ROLE', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NODE_HOST', full_name='Env.DMLC_NODE_HOST', index=3,
+      name='DMLC_NODE_HOST', full_name='DMLC_VARS.DMLC_NODE_HOST', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NUM_WORKER', full_name='Env.DMLC_NUM_WORKER', index=4,
-      number=5, type=5, cpp_type=1, label=1,
+      name='DMLC_NUM_WORKER', full_name='DMLC_VARS.DMLC_NUM_WORKER', index=4,
+      number=5, type=5, cpp_type=1, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='DMLC_NUM_SERVER', full_name='Env.DMLC_NUM_SERVER', index=5,
+      name='DMLC_NUM_SERVER', full_name='DMLC_VARS.DMLC_NUM_SERVER', index=5,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -83,57 +83,12 @@ _ENV = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=15,
-  serialized_end=166,
-)
-
-
-_STARTJOBREQUEST = _descriptor.Descriptor(
-  name='StartJobRequest',
-  full_name='StartJobRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='cmd', full_name='StartJobRequest.cmd', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='env', full_name='StartJobRequest.env', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='password', full_name='StartJobRequest.password', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=168,
-  serialized_end=235,
+  serialized_end=172,
 )
 
 
@@ -145,7 +100,7 @@ _INITREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='env', full_name='InitRequest.env', index=0,
+      name='dmlc_vars', full_name='InitRequest.dmlc_vars', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -159,12 +114,12 @@ _INITREQUEST = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=237,
-  serialized_end=269,
+  serialized_start=174,
+  serialized_end=218,
 )
 
 
@@ -175,6 +130,188 @@ _TRAINREQUEST = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='eta', full_name='TrainRequest.eta', index=0,
+      number=1, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='gamma', full_name='TrainRequest.gamma', index=1,
+      number=2, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='max_depth', full_name='TrainRequest.max_depth', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='min_child_weight', full_name='TrainRequest.min_child_weight', index=3,
+      number=4, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='max_delta_step', full_name='TrainRequest.max_delta_step', index=4,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subsample', full_name='TrainRequest.subsample', index=5,
+      number=26, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='colsample_bytree', full_name='TrainRequest.colsample_bytree', index=6,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='colsample_bylevel', full_name='TrainRequest.colsample_bylevel', index=7,
+      number=7, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='colsample_bynode', full_name='TrainRequest.colsample_bynode', index=8,
+      number=8, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='lambda', full_name='TrainRequest.lambda', index=9,
+      number=9, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='alpha', full_name='TrainRequest.alpha', index=10,
+      number=10, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tree_method', full_name='TrainRequest.tree_method', index=11,
+      number=11, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sketch_eps', full_name='TrainRequest.sketch_eps', index=12,
+      number=12, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='scale_pos_weight', full_name='TrainRequest.scale_pos_weight', index=13,
+      number=13, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='updater', full_name='TrainRequest.updater', index=14,
+      number=14, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='refresh_leaf', full_name='TrainRequest.refresh_leaf', index=15,
+      number=15, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='process_type', full_name='TrainRequest.process_type', index=16,
+      number=16, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='grow_policy', full_name='TrainRequest.grow_policy', index=17,
+      number=17, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='max_leaves', full_name='TrainRequest.max_leaves', index=18,
+      number=18, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='max_bin', full_name='TrainRequest.max_bin', index=19,
+      number=19, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='predictor', full_name='TrainRequest.predictor', index=20,
+      number=20, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='num_parallel_tree', full_name='TrainRequest.num_parallel_tree', index=21,
+      number=21, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='objective', full_name='TrainRequest.objective', index=22,
+      number=22, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='base_score', full_name='TrainRequest.base_score', index=23,
+      number=23, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='eval_metric', full_name='TrainRequest.eval_metric', index=24,
+      number=24, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='num_round', full_name='TrainRequest.num_round', index=25,
+      number=25, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -183,12 +320,12 @@ _TRAINREQUEST = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=271,
-  serialized_end=285,
+  serialized_start=221,
+  serialized_end=772,
 )
 
 
@@ -214,36 +351,27 @@ _WORKERRESPONSE = _descriptor.Descriptor(
   ],
   serialized_options=None,
   is_extendable=False,
-  syntax='proto3',
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=287,
-  serialized_end=320,
+  serialized_start=774,
+  serialized_end=807,
 )
 
-_STARTJOBREQUEST.fields_by_name['env'].message_type = _ENV
-_INITREQUEST.fields_by_name['env'].message_type = _ENV
-DESCRIPTOR.message_types_by_name['Env'] = _ENV
-DESCRIPTOR.message_types_by_name['StartJobRequest'] = _STARTJOBREQUEST
+_INITREQUEST.fields_by_name['dmlc_vars'].message_type = _DMLC_VARS
+DESCRIPTOR.message_types_by_name['DMLC_VARS'] = _DMLC_VARS
 DESCRIPTOR.message_types_by_name['InitRequest'] = _INITREQUEST
 DESCRIPTOR.message_types_by_name['TrainRequest'] = _TRAINREQUEST
 DESCRIPTOR.message_types_by_name['WorkerResponse'] = _WORKERRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Env = _reflection.GeneratedProtocolMessageType('Env', (_message.Message,), {
-  'DESCRIPTOR' : _ENV,
+DMLC_VARS = _reflection.GeneratedProtocolMessageType('DMLC_VARS', (_message.Message,), {
+  'DESCRIPTOR' : _DMLC_VARS,
   '__module__' : 'fxgb_pb2'
-  # @@protoc_insertion_point(class_scope:Env)
+  # @@protoc_insertion_point(class_scope:DMLC_VARS)
   })
-_sym_db.RegisterMessage(Env)
-
-StartJobRequest = _reflection.GeneratedProtocolMessageType('StartJobRequest', (_message.Message,), {
-  'DESCRIPTOR' : _STARTJOBREQUEST,
-  '__module__' : 'fxgb_pb2'
-  # @@protoc_insertion_point(class_scope:StartJobRequest)
-  })
-_sym_db.RegisterMessage(StartJobRequest)
+_sym_db.RegisterMessage(DMLC_VARS)
 
 InitRequest = _reflection.GeneratedProtocolMessageType('InitRequest', (_message.Message,), {
   'DESCRIPTOR' : _INITREQUEST,
@@ -274,22 +402,13 @@ _FXGBWORKER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=323,
-  serialized_end=468,
+  serialized_start=809,
+  serialized_end=905,
   methods=[
-  _descriptor.MethodDescriptor(
-    name='StartJob',
-    full_name='FXGBWorker.StartJob',
-    index=0,
-    containing_service=None,
-    input_type=_STARTJOBREQUEST,
-    output_type=_WORKERRESPONSE,
-    serialized_options=None,
-  ),
   _descriptor.MethodDescriptor(
     name='Init',
     full_name='FXGBWorker.Init',
-    index=1,
+    index=0,
     containing_service=None,
     input_type=_INITREQUEST,
     output_type=_WORKERRESPONSE,
@@ -298,7 +417,7 @@ _FXGBWORKER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Train',
     full_name='FXGBWorker.Train',
-    index=2,
+    index=1,
     containing_service=None,
     input_type=_TRAINREQUEST,
     output_type=_WORKERRESPONSE,

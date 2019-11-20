@@ -14,11 +14,6 @@ class FXGBWorkerStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.StartJob = channel.unary_unary(
-        '/FXGBWorker/StartJob',
-        request_serializer=fxgb__pb2.StartJobRequest.SerializeToString,
-        response_deserializer=fxgb__pb2.WorkerResponse.FromString,
-        )
     self.Init = channel.unary_unary(
         '/FXGBWorker/Init',
         request_serializer=fxgb__pb2.InitRequest.SerializeToString,
@@ -34,13 +29,6 @@ class FXGBWorkerStub(object):
 class FXGBWorkerServicer(object):
   # missing associated documentation comment in .proto file
   pass
-
-  def StartJob(self, request, context):
-    """Run full script.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
 
   def Init(self, request, context):
     """Initialize rabit and environment variables.
@@ -60,11 +48,6 @@ class FXGBWorkerServicer(object):
 
 def add_FXGBWorkerServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'StartJob': grpc.unary_unary_rpc_method_handler(
-          servicer.StartJob,
-          request_deserializer=fxgb__pb2.StartJobRequest.FromString,
-          response_serializer=fxgb__pb2.WorkerResponse.SerializeToString,
-      ),
       'Init': grpc.unary_unary_rpc_method_handler(
           servicer.Init,
           request_deserializer=fxgb__pb2.InitRequest.FromString,

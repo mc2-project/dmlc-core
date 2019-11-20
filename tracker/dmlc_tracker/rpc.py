@@ -18,19 +18,18 @@ import tracker
 import _credentials
 
 
-def run(worker, command, env, password):
+def run(worker, dmlc_vars):
     '''
     This function is run by every thread (one thread is spawned per worker)
 
     Params:
         worker - string that is IP:PORT format
-        command - script to run
-        env - environment variables
+        dmlc_vars - environment variables
     '''
     creds = grpc.ssl_channel_credentials(_credentials.ROOT_CERTIFICATE)
     with grpc.secure_channel(worker, creds) as channel:
         stub = fxgb_pb2_grpc.FXGBWorkerStub(channel)
-        stub.Init(fxgb_pb2.InitRequest(env=env))
+        stub.Init(fxgb_pb2.InitRequest(dmlc_vars=dmlc_vars))
         stub.Train(fxgb_pb2.TrainRequest())
 
 
@@ -43,13 +42,12 @@ def submit(args):
 
     # When submit is called, the workers are assumed to have run 'grpc_worker.py'.
     def gRPC_submit(nworker, nserver, pass_envs):      
-        password = input("Enter session password: ")  
         for i in range(nworker):
             worker = hosts[i]
-            print('worker ip:port -', worker)
+            print('connecting to worker | ip:port | -', worker)
 
-            # Package PASS ENVS into protobuf
-            env = fxgb_pb2.Env(
+            # Package dmlc variables into protobuf
+            dmlc_vars = fxgb_pb2.DMLC_VARS(
                 DMLC_TRACKER_URI=pass_envs['DMLC_TRACKER_URI'],
                 DMLC_TRACKER_PORT=pass_envs['DMLC_TRACKER_PORT'],
                 DMLC_ROLE='worker',
@@ -59,11 +57,7 @@ def submit(args):
             )
 
             # spawn thread to call RPC
-            thread = Thread(target=run, args=(worker, 
-                                            ' '.join(args.command), 
-                                            env, 
-                                            password
-                                            ))
+            thread = Thread(target=run, args=(worker, dmlc_vars))
             thread.setDaemon(True)
             thread.start()
 
