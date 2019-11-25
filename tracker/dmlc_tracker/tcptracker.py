@@ -20,16 +20,6 @@ import argparse
 import time
 import logging
 from threading import Thread
-import datetime as dt
-from mbedtls import hash as hashlib
-from mbedtls import pk, x509, tls
-from contextlib import suppress
-
-
-def block(callback, *args, **kwargs):
-    while True:
-        with suppress(tls.WantReadError, tls.WantWriteError):
-            return callback(*args, **kwargs)
 
 class ExSocket(object):
     """
@@ -37,16 +27,14 @@ class ExSocket(object):
     """
     def __init__(self, sock):
         self.sock = sock
-        self.buf = b''
     def recvall(self, nbytes):
-        res = self.buf
-        nread = len(self.buf)
+        res = []
+        nread = 0
         while nread < nbytes:
-            chunk = self.sock.recv(65355)
+            chunk = self.sock.recv(min(nbytes - nread, 1024))
             nread += len(chunk)
-            res += chunk
-        res, self.buf = res[:nbytes], res[nbytes:]
-        return res
+            res.append(chunk)
+        return b''.join(res)
     def recvint(self):
         return struct.unpack('@i', self.recvall(4))[0]
     def sendint(self, n):
@@ -69,41 +57,7 @@ def get_family(addr):
 
 class SlaveEntry(object):
     def __init__(self, sock, s_addr):
-        now = dt.datetime.utcnow()
-        ca0_key = pk.RSA()
-        _ = ca0_key.generate()
-        ca0_csr = x509.CSR.new(ca0_key, "CN=Trusted CA", hashlib.sha256())
-        ca0_crt = x509.CRT.selfsign(
-                ca0_csr, ca0_key,
-                not_before=now, not_after = now + dt.timedelta(days=90),
-                serial_number=0x123456,
-                basic_constraints=x509.BasicConstraints(True, 1))
-
-        ca1_key = pk.ECC()
-        _ = ca1_key.generate()
-        ca1_csr = x509.CSR.new(ca1_key, "CN=Intermediate CA", hashlib.sha256())
-        ca1_crt = ca0_crt.sign(
-                ca1_csr, ca0_key, now, now + dt.timedelta(days=90), 0x123456,
-                basic_constraints=x509.BasicConstraints(ca=True, max_path_length=3))
-
-        ee0_key = pk.ECC()
-        _ = ee0_key.generate()
-        ee0_csr = x509.CSR.new(ee0_key, "CN=End Entity", hashlib.sha256())
-        ee0_crt = ca1_crt.sign(ee0_csr, ca1_key, now, now + dt.timedelta(days=90), 0x987654)
-
-        trust_store = tls.TrustStore()
-        trust_store.add(ca0_crt)
-
-        tls_srv_ctx = tls.ServerContext(tls.TLSConfiguration(
-            trust_store=trust_store,
-            certificate_chain=([ee0_crt, ca1_crt], ee0_key),
-            validate_certificates=False))
-
-        tls_sock = tls_srv_ctx.wrap_socket(sock)
-        block(tls_sock.do_handshake)
-        logging.info("Did handshake")
-
-        slave = ExSocket(tls_sock)
+        slave = ExSocket(sock)
         self.sock = slave
         self.host = get_some_ip(s_addr[0])
         magic = slave.recvint()
@@ -311,7 +265,6 @@ class RabitTracker(object):
 
         while len(shutdown) != nslave:
             fd, s_addr = self.sock.accept()
-            logging.info("Accepted %s", s_addr)
             s = SlaveEntry(fd, s_addr)
             if s.cmd == 'print':
                 msg = s.sock.recvstr()

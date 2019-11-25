@@ -101,7 +101,6 @@ class SlaveEntry(object):
 
         tls_sock = tls_srv_ctx.wrap_socket(sock)
         block(tls_sock.do_handshake)
-        logging.info("Did handshake")
 
         slave = ExSocket(tls_sock)
         self.sock = slave
