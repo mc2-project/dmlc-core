@@ -40,16 +40,19 @@ def main():
     """Main submission function."""
     args = opts.get_opts()
     config_logger(args)
-    fun_submit = {
-        'local': local.submit,
-        'sge': sge.submit,
-        'yarn': yarn.submit,
-        'mpi': mpi.submit,
-        'mesos': mesos.submit,
-        'ssh': ssh.submit,
-        'rpc': rpc.submit,
-    }
-    if args.cluster in fun_submit:
-        fun_submit[args.cluster](args)
+    if args.cluster == 'local':
+        local.submit(args)
+    elif args.cluster == 'sge':
+        sge.submit(args)
+    elif args.cluster == 'yarn':
+        yarn.submit(args)
+    elif args.cluster == 'mpi':
+        mpi.submit(args)
+    elif args.cluster == 'mesos':
+        mesos.submit(args)
+    elif args.cluster == 'ssh':
+        ssh.submit(args)
+    elif args.cluster == 'rpc':
+        rpc.submit(args)
     else:
         raise RuntimeError('Unknown submission cluster type %s' % args.cluster)

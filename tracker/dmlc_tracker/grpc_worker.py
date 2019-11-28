@@ -31,12 +31,12 @@ def get_dmlc_vars(env):
         list containing DMLC variables
     '''
     temp = [
-        'DMLC_TRACKER_URI='+env.DMLC_TRACKER_URI,
-        'DMLC_TRACKER_PORT='+str(env.DMLC_TRACKER_PORT),
-        'DMLC_ROLE='+env.DMLC_ROLE,
-        'DMLC_NODE_HOST='+env.DMLC_NODE_HOST,
-        'DMLC_NUM_WORKER='+str(env.DMLC_NUM_WORKER),
-        'DMLC_NUM_SERVER='+str(env.DMLC_NUM_SERVER),
+        'DMLC_TRACKER_URI=' + env.DMLC_TRACKER_URI,
+        'DMLC_TRACKER_PORT=' + str(env.DMLC_TRACKER_PORT),
+        'DMLC_ROLE=' + env.DMLC_ROLE,
+        'DMLC_NODE_HOST=' + env.DMLC_NODE_HOST,
+        'DMLC_NUM_WORKER=' + str(env.DMLC_NUM_WORKER),
+        'DMLC_NUM_SERVER=' + str(env.DMLC_NUM_SERVER),
     ]
     # Python strings are unicode, but C strings are bytes, so we must convert to bytes.
     return [bytes(s, 'utf-8') for s in temp]
@@ -94,14 +94,15 @@ class FederatedXGBoostServicer():
         self.model_path = model_path
         print("Started up FXGB worker. Now listening on port %s for RPC to start job." % self.port)
 
-    def Init(self, request, context):
+    def Init(self, init_request, context):
         '''
         Initializes rabit and environment variables.
         When worker receives this RPC, it can accept or reject the federated training session.
 
         Params:
-            request - InitRequest proto. Contains environment variables
-        
+            init_request - InitRequest proto containing DMLC variables to set up node communication with tracker
+            context - RPC context. Contains metadata about the connection
+
         Return:
             WorkerResponse proto (confirmation of initializatison success or failure).
         '''
@@ -116,27 +117,35 @@ class FederatedXGBoostServicer():
         else:
             return fxgb_pb2.WorkerResponse(success=False)
 
-    def Train(self, request, context):
+    def Train(self, train_request, context):
         '''
         Starts distributed training.
+
+        Params:
+            train_request - TrainRequest proto containing XGBoost parameters for training
+            context - RPC context containing metadata about the connection
 
         Return:
             WorkerResponse proto (confirmation of training success or failure).
         '''
-        print('Request from aggregator [%s] to start federated training session:' % context.peer())
-        xgb.rabit.init(self.dmlc_vars)
-        print('Loading dataset...')
-        dataset = pd.read_csv(self.data_path, delimiter=',', header=None)
-        data, label = dataset.iloc[:, 1:], dataset.iloc[:, 0]
-        dtrain = xgb.DMatrix(data, label=label)
-        print('Dataset loaded.')
-        param, num_round = get_train_params(request)
-        print('Starting training...')
-        model = xgb.train(param, dtrain, num_round)
-        print('Training finished.')
-        model.save_model(self.model_path)
-        print('Model saved.')
-        xgb.rabit.finalize()
+        try:
+            print('Request from aggregator [%s] to start federated training session:' % context.peer())
+            xgb.rabit.init(self.dmlc_vars)
+            print('Loading dataset...')
+            dataset = pd.read_csv(self.data_path, delimiter=',', header=None)
+            data, label = dataset.iloc[:, 1:], dataset.iloc[:, 0]
+            dtrain = xgb.DMatrix(data, label=label)
+            print('Dataset loaded.')
+            param, num_round = get_train_params(request)
+            print('Starting training...')
+            model = xgb.train(param, dtrain, num_round)
+            print('Training finished.')
+            model.save_model(self.model_path)
+            print('Model saved.')
+            xgb.rabit.finalize()
+            return fxgb_pb2.WorkerResponse(success=True)
+        except:
+            return fxgb_pb2.WorkerResponse(success=False)
 
 
 # Start gRPC server listening on port 'port'
