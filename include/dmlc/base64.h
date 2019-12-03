@@ -8,9 +8,9 @@
 namespace dmlc {
 namespace data {
 
-int base64_decode(const char* encoded_string, size_t in_len, char* decoded_string);
-std::string base64_decode(std::string const& encoded_string);
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
+static int base64_decode(const char* encoded_string, size_t in_len, char* decoded_string);
+static std::string base64_decode(std::string const& encoded_string);
+static std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
 
 static const std::string base64_chars = 
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
