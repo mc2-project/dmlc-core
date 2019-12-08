@@ -8,7 +8,8 @@ from . import mpi
 from . import sge
 from . import yarn
 from . import mesos
-from . import kubernetes
+from . import ssh
+from . import rpc
 
 def config_logger(args):
     """Configure the logger according to the arguments
@@ -39,7 +40,6 @@ def main():
     """Main submission function."""
     args = opts.get_opts()
     config_logger(args)
-
     if args.cluster == 'local':
         local.submit(args)
     elif args.cluster == 'sge':
@@ -50,7 +50,9 @@ def main():
         mpi.submit(args)
     elif args.cluster == 'mesos':
         mesos.submit(args)
-    elif args.cluster == 'kubernetes':
-        kubernetes.submit(args)
+    elif args.cluster == 'ssh':
+        ssh.submit(args)
+    elif args.cluster == 'rpc':
+        rpc.submit(args)
     else:
         raise RuntimeError('Unknown submission cluster type %s' % args.cluster)

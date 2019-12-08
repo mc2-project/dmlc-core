@@ -72,11 +72,11 @@ def submit(args):
             pool.close()
             pool.join()
             
-
         # launch jobs
         for i in range(nworker + nserver):
             pass_envs['DMLC_ROLE'] = 'server' if i < nserver else 'worker'
             (node, port) = hosts[i % len(hosts)]
+            logging.debug("SSH-ing to %s:%s", node, port)
             pass_envs['DMLC_NODE_HOST'] = node
             prog = get_env(pass_envs) + ' cd ' + working_dir + '; ' + (' '.join(args.command))
             prog = 'ssh -o StrictHostKeyChecking=no ' + node + ' -p ' + port + ' \'' + prog + '\''
