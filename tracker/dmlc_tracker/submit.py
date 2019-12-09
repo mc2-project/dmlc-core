@@ -9,7 +9,7 @@ from . import sge
 from . import yarn
 from . import mesos
 from . import ssh
-from . import rpc
+#  from . import rpc
 
 def config_logger(args):
     """Configure the logger according to the arguments
@@ -52,7 +52,7 @@ def main():
         mesos.submit(args)
     elif args.cluster == 'ssh':
         ssh.submit(args)
-    elif args.cluster == 'rpc':
-        rpc.submit(args)
+    #  elif args.cluster == 'rpc':
+        #  rpc.submit(args)
     else:
         raise RuntimeError('Unknown submission cluster type %s' % args.cluster)
