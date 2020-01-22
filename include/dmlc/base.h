@@ -99,8 +99,12 @@
 #endif
 
 /*! \brief whether use fopen64 */
+#ifndef __ENCLAVE__
 #ifndef DMLC_USE_FOPEN64
 #define DMLC_USE_FOPEN64 1
+#endif
+#else
+#define DMLC_USE_FOPEN64 0
 #endif
 
 /// check if g++ is before 4.6
