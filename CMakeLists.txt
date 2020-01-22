@@ -20,6 +20,11 @@ dmlccore_option(USE_OPENMP "Build with OpenMP" ON)
 dmlccore_option(USE_CXX14_IF_AVAILABLE "Build with C++14 if the compiler supports it" OFF)
 dmlccore_option(GOOGLE_TEST "Build google tests" OFF)
 dmlccore_option(INSTALL_DOCUMENTATION "Install documentation" OFF)
+dmlccore_option(DMLC_FORCE_SHARED_CRT "Build with dynamic CRT on Windows (/MD)" OFF)
+dmlccore_option(DMLC_USE_SANITIZER "Use santizer flags; to specify a custom path for sanitizers, set this variable a value that's not ON or OFF" OFF)
+set(DMLC_ENABLED_SANITIZERS "address" "leak" CACHE STRING
+  "Semicolon separated list of sanitizer names. E.g 'address;leak'. Supported sanitizers are
+  address, leak and thread.")
 
 # include path
 set(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -27,6 +32,15 @@ set(INCLUDE_DMLC_DIR "${INCLUDE_ROOT}/dmlc")
 # include_directories("${INCLUDE_ROOT}")
 
 set(dmlccore_LINKER_LIBS "")
+
+# Sanitizer
+if (DMLC_USE_SANITIZER)
+  # Older CMake versions have had troubles with Sanitizer
+  cmake_minimum_required(VERSION 3.12)
+  include(cmake/Sanitizer.cmake)
+  enable_sanitizers("${DMLC_ENABLED_SANITIZERS}")
+endif (DMLC_USE_SANITIZER)
+
 # HDFS configurations
 if(USE_HDFS)
  find_package(HDFS REQUIRED)
@@ -107,13 +121,15 @@ configure_file("${CMAKE_LOCAL}/build_config.h.in" "${INCLUDE_DMLC_DIR}/build_con
 # compiler flags
 if(MSVC)
   add_definitions(-DDMLC_USE_CXX11)
-  foreach(flag_var
-        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-    if(${flag_var} MATCHES "/MD")
-      string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-    endif(${flag_var} MATCHES "/MD")
-  endforeach(flag_var)
+  if(NOT BUILD_SHARED_LIBS AND NOT DMLC_FORCE_SHARED_CRT)
+    foreach(flag_var
+          CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+          CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+      if(${flag_var} MATCHES "/MD")
+        string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+      endif(${flag_var} MATCHES "/MD")
+    endforeach(flag_var)
+  endif()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 else(MSVC)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -191,7 +207,9 @@ target_include_directories(dmlc PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>)
 target_compile_definitions(dmlc PRIVATE -D_XOPEN_SOURCE=700
-  -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L -D_DARWIN_C_SOURCE)
+  -D_POSIX_SOURCE -D_POSIX_C_SOURCE=200809L -D_DARWIN_C_SOURCE
+  -DDMLC_CORE_USE_CMAKE)
+# DMLC_CORE_USE_CMAKE macro constant indicates the use of CMake
 
 include(GNUInstallDirs)
 # ---[ Install Includes

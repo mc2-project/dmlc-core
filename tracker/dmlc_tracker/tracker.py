@@ -20,6 +20,7 @@ import argparse
 import time
 import logging
 from threading import Thread
+from requests import get
 
 class ExSocket(object):
     """
@@ -60,6 +61,7 @@ class SlaveEntry(object):
         slave = ExSocket(sock)
         self.sock = slave
         self.host = get_some_ip(s_addr[0])
+        logging.debug("Created SlaveEntry for node: %s" % self.host)
         magic = slave.recvint()
         assert magic == kMagic, 'invalid magic number=%d from %s' % (magic, self.host)
         slave.sendint(kMagic)
@@ -179,7 +181,8 @@ class RabitTracker(object):
         get enviroment variables for slaves
         can be passed in as args or envs
         """
-        return {'DMLC_TRACKER_URI': self.hostIP,
+        #  return {'DMLC_TRACKER_URI': self.hostIP,
+        return {'DMLC_TRACKER_URI': get('https://api.ipify.org').text,
                 'DMLC_TRACKER_PORT': self.port}
 
     def get_tree(self, nslave):
@@ -188,6 +191,14 @@ class RabitTracker(object):
         for r in range(nslave):
             tree_map[r] = self.get_neighbor(r, nslave)
             parent_map[r] = (r + 1) // 2 - 1
+        return tree_map, parent_map
+
+    def get_star(self, nslave):
+        tree_map = {}
+        parent_map = {}
+        for r in range(nslave):
+            tree_map[r] = [0] if r != 0 else [worker for worker in range(1, nslave)]
+            parent_map[r] = 0 if r != 0 else -1
         return tree_map, parent_map
 
     def find_share_ring(self, tree_map, parent_map, r):
@@ -229,7 +240,7 @@ class RabitTracker(object):
         get the link map, this is a bit hacky, call for better algorithm
         to place similar nodes together
         """
-        tree_map, parent_map = self.get_tree(nslave)
+        tree_map, parent_map = self.get_star(nslave)
         ring_map = self.get_ring(tree_map, parent_map)
         rmap = {0 : 0}
         k = 0
@@ -251,7 +262,7 @@ class RabitTracker(object):
                 parent_map_[rmap[k]] = -1
         return tree_map_, parent_map_, ring_map_
 
-    def accept_slaves(self, nslave):
+    def accept_slaves(self, nslave, masterIP=None):
         # set of nodes that finishs the job
         shutdown = {}
         # set of nodes that is waiting for connections
@@ -296,7 +307,13 @@ class RabitTracker(object):
                 assert len(todo_nodes) != 0
                 pending.append(s)
                 if len(pending) == len(todo_nodes):
-                    pending.sort(key=lambda x: x.host)
+                    if masterIP:
+                        master_entry = None
+                        for slave_entry in pending:
+                            if slave_entry.host == masterIP:
+                               master_entry = slave_entry 
+                        if master_entry:
+                            pending.insert(0, pending.pop(pending.index(master_entry)))
                     for s in pending:
                         rank = todo_nodes.pop(0)
                         if s.jobid != 'NULL':
@@ -319,9 +336,9 @@ class RabitTracker(object):
         logging.info('@tracker %s secs between node start and job finish',
                      str(self.end_time - self.start_time))
 
-    def start(self, nslave):
+    def start(self, nslave, masterIP=None):
         def run():
-            self.accept_slaves(nslave)
+            self.accept_slaves(nslave, masterIP)
         self.thread = Thread(target=run, args=())
         self.thread.setDaemon(True)
         self.thread.start()
@@ -418,7 +435,9 @@ def submit(nworker, nserver, fun_submit, hostIP='auto', pscmd=None):
     if nserver == 0:
         rabit = RabitTracker(hostIP=hostIP, nslave=nworker)
         envs.update(rabit.slave_envs())
-        rabit.start(nworker)
+        masterIP = get('https://api.ipify.org').text
+        rabit.start(nworker, masterIP)
+        #  rabit.start(nworker, hostIP)
         if rabit.alive():
            fun_submit(nworker, nserver, envs)
     else:
