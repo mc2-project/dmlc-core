@@ -310,6 +310,7 @@ class Parser : public DataIter<RowBlock<IndexType, DType> > {
          unsigned part_index,
          unsigned num_parts,
          const char *type,
+         bool is_encrypted,
          const char* key);
 #else
   static Parser<IndexType, DType> *
@@ -327,6 +328,7 @@ class Parser : public DataIter<RowBlock<IndexType, DType> > {
      const std::map<std::string, std::string>& args,
      unsigned part_index,
      unsigned num_parts,
+     bool is_encrypted,
      const char* key);
 #else
   typedef Parser<IndexType, DType>* (*Factory)
