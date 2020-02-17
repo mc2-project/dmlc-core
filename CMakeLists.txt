@@ -27,9 +27,9 @@ set(DMLC_ENABLED_SANITIZERS "address" "leak" CACHE STRING
   address, leak and thread.")
 
 # include path
-set(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/include")
+set(INCLUDE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../include")
 set(INCLUDE_DMLC_DIR "${INCLUDE_ROOT}/dmlc")
-# include_directories("${INCLUDE_ROOT}")
+include_directories("${INCLUDE_ROOT}")
 
 set(dmlccore_LINKER_LIBS "")
 
