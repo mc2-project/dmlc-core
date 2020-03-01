@@ -181,8 +181,7 @@ class RabitTracker(object):
         get enviroment variables for slaves
         can be passed in as args or envs
         """
-        #  return {'DMLC_TRACKER_URI': self.hostIP,
-        return {'DMLC_TRACKER_URI': get('https://api.ipify.org').text,
+        return {'DMLC_TRACKER_URI': self.hostIP,
                 'DMLC_TRACKER_PORT': self.port}
 
     def get_tree(self, nslave):
