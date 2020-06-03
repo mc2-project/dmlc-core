@@ -305,6 +305,7 @@ class RabitTracker(object):
                 assert len(todo_nodes) != 0
                 pending.append(s)
                 if len(pending) == len(todo_nodes):
+                    # Assign the tracker node to have rank 0
                     if masterIP:
                         master_entry = None
                         for slave_entry in pending:
