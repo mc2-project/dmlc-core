@@ -172,7 +172,8 @@ def start_worker(port):
     fxgb_pb2_grpc.add_FXGBWorkerServicer_to_server(FederatedXGBoostServicer(), server)
     server_credentials = grpc.ssl_server_credentials(
         ((_credentials.SERVER_CERTIFICATE_KEY, _credentials.SERVER_CERTIFICATE),))
-    server.add_secure_port('[::]:' + port, server_credentials)
+    #  server.add_secure_port('[::]:' + port, server_credentials)
+    server.add_insecure_port('[::]:' + port)
     print("Starting RPC server on port ", port)
     server.start()
     server.wait_for_termination()

@@ -27,7 +27,8 @@ def run(worker, dmlc_vars):
         dmlc_vars - environment variables
     '''
     creds = grpc.ssl_channel_credentials(_credentials.ROOT_CERTIFICATE)
-    with grpc.secure_channel(worker, creds) as channel:
+    #  with grpc.secure_channel(worker, creds) as channel:
+    with grpc.insecure_channel(worker) as channel:
         stub = fxgb_pb2_grpc.FXGBWorkerStub(channel)
         stub.Init(fxgb_pb2.InitRequest(dmlc_vars=dmlc_vars))
         stub.Train(fxgb_pb2.TrainRequest())
