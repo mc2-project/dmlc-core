@@ -86,13 +86,8 @@ def get_train_params(train_request):
 class FederatedXGBoostServicer():
     ''' gRPC servicer class which implements worker machine RPCs API. '''
 
-    def __init__(self, port, data_path, model_path):
-        self.model = None
-        self.dmlc_vars = None
-        self.port = port
-        self.data_path = data_path
-        self.model_path = model_path
-        print("Started up FXGB worker. Now listening on port %s for RPC to start job." % self.port)
+    def __init__(self, port):
+        pass
 
     def Init(self, init_request, context):
         '''
@@ -130,35 +125,59 @@ class FederatedXGBoostServicer():
         '''
         try:
             print('Request from aggregator [%s] to start federated training session:' % context.peer())
-            xgb.rabit.init(self.dmlc_vars)
-            print('Loading dataset...')
-            dataset = pd.read_csv(self.data_path, delimiter=',', header=None)
-            data, label = dataset.iloc[:, 1:], dataset.iloc[:, 0]
-            dtrain = xgb.DMatrix(data, label=label)
-            print('Dataset loaded.')
-            param, num_round = get_train_params(request)
-            print('Starting training...')
-            model = xgb.train(param, dtrain, num_round)
-            print('Training finished.')
-            model.save_model(self.model_path)
-            print('Model saved.')
-            xgb.rabit.finalize()
+
+            # Instantiate Federated XGBoost
+            fed = xgb.Federated()
+            
+            # Get number of federating parties
+            print(fed.get_num_parties())
+            
+            # Load training data
+            # Ensure that each party's data is in the same location with the same name
+            dtrain = fed.load_data("../data/hb_train.csv")
+            dval = fed.load_data("../data/hb_val.csv")
+            
+            # Train a model
+            params = {
+                    "max_depth": 3, 
+                    "min_child_weight": 1.0, 
+                    "lambda": 1.0,
+                    "tree_method": "hist",
+                    "objective": "binary:logistic"
+                    }
+            
+            num_rounds = 20
+            bst = xgb.train(params, dtrain, num_rounds, evals=[(dtrain, "dtrain"), (dval, "dval")])
+            
+            dtest = fed.load_data("../data/hb_test.csv")
+            
+            # Get predictions
+            ypred = bst.predict(dtest)
+            
+            print("The first twenty predictions are: ", ypred[:20])
+            
+            # Save the model
+            bst.save_model("sample_model.model")
+            
+            # Shutdown
+            fed.shutdown()
             return fxgb_pb2.WorkerResponse(success=True)
         except:
             return fxgb_pb2.WorkerResponse(success=False)
 
 
 # Start gRPC server listening on port 'port'
-def start_worker(port, data_path, model_path):
+def start_worker(port):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    fxgb_pb2_grpc.add_FXGBWorkerServicer_to_server(FederatedXGBoostServicer(port, data_path, model_path), server)
+    fxgb_pb2_grpc.add_FXGBWorkerServicer_to_server(FederatedXGBoostServicer(), server)
     server_credentials = grpc.ssl_server_credentials(
         ((_credentials.SERVER_CERTIFICATE_KEY, _credentials.SERVER_CERTIFICATE),))
     server.add_secure_port('[::]:' + port, server_credentials)
+    print("Starting RPC server on port ", port)
     server.start()
     server.wait_for_termination()
 
 
 if __name__ == '__main__':
-    assert len(sys.argv) == 4, "usage - python3 grpc_worker.py <PORT> <PATH TO DATA> <PATH TO SAVE MODEL>"
-    start_worker(sys.argv[1], sys.argv[2], sys.argv[3])
+    assert len(sys.argv) == 1, "usage - python3 grpc_worker.py <PORT>" 
+    start_worker(sys.argv[1])
