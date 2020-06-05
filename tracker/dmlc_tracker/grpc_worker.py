@@ -86,7 +86,7 @@ def get_train_params(train_request):
 class FederatedXGBoostServicer():
     ''' gRPC servicer class which implements worker machine RPCs API. '''
 
-    def __init__(self, port):
+    def __init__(self):
         pass
 
     def Init(self, init_request, context):
@@ -179,5 +179,5 @@ def start_worker(port):
 
 
 if __name__ == '__main__':
-    assert len(sys.argv) == 1, "usage - python3 grpc_worker.py <PORT>" 
+    assert len(sys.argv) == 2, "usage - python3 grpc_worker.py <PORT>" 
     start_worker(sys.argv[1])
