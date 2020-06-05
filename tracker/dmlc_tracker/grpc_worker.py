@@ -87,7 +87,7 @@ class FederatedXGBoostServicer():
     ''' gRPC servicer class which implements worker machine RPCs API. '''
 
     def __init__(self):
-        pass
+        self.dmlc_vars = None
 
     def Init(self, request, context):
         '''
@@ -127,8 +127,8 @@ class FederatedXGBoostServicer():
             print('Request from aggregator [%s] to start federated training session:' % context.peer())
 
             # Instantiate Federated XGBoost
-            fed = xgb.Federated()
-            
+            fed = xgb.Federated(self.dmlc_vars)
+            print("rabit init")            
             # Get number of federating parties
             print(fed.get_num_parties())
             
