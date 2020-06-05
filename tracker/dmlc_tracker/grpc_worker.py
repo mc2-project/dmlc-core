@@ -89,7 +89,7 @@ class FederatedXGBoostServicer():
     def __init__(self):
         pass
 
-    def Init(self, init_request, context):
+    def Init(self, request, context):
         '''
         Initializes rabit and environment variables.
         When worker receives this RPC, it can accept or reject the federated training session.
@@ -112,7 +112,7 @@ class FederatedXGBoostServicer():
         else:
             return fxgb_pb2.WorkerResponse(success=False)
 
-    def Train(self, train_request, context):
+    def Train(self, request, context):
         '''
         Starts distributed training.
 
