@@ -134,9 +134,11 @@ class FederatedXGBoostServicer():
             
             # Load training data
             # Ensure that each party's data is in the same location with the same name
-            dtrain = fed.load_data("../data/hb_train.csv")
-            dval = fed.load_data("../data/hb_val.csv")
+            print("Load data")
+            dtrain = fed.load_data("/home/ubuntu/federated-xgboost/demo/data/hb_train.csv")
+            dval = fed.load_data("/home/ubuntu/federated-xgboost/demo/data/hb_val.csv")
             
+            print('setting params')
             # Train a model
             params = {
                     "max_depth": 3, 
@@ -147,11 +149,13 @@ class FederatedXGBoostServicer():
                     }
             
             num_rounds = 20
+            print("Training")
             bst = xgb.train(params, dtrain, num_rounds, evals=[(dtrain, "dtrain"), (dval, "dval")])
             
-            dtest = fed.load_data("../data/hb_test.csv")
+            dtest = fed.load_data("/home/ubuntu/federated-xgboost/demo/data/hb_test.csv")
             
             # Get predictions
+            print("Predicting")
             ypred = bst.predict(dtest)
             
             print("The first twenty predictions are: ", ypred[:20])
