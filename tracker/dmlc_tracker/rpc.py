@@ -11,14 +11,16 @@ import sys
 
 import grpc
 
-sys.path.insert(0,'../../../dmlc-core/tracker/dmlc_tracker')
+# FIXME: is there a better way to import fxgb_pb2?
+sys.path.insert(0,'../../../python-package/xgboost/rpc')
+
 import fxgb_pb2
 import fxgb_pb2_grpc
 import tracker
 import _credentials
 
 
-def run(worker, dmlc_vars):
+def run(worker, dmlc_vars, path_to_script):
     '''
     This function is run by every thread (one thread is spawned per worker)
 
@@ -31,7 +33,7 @@ def run(worker, dmlc_vars):
     with grpc.insecure_channel(worker) as channel:
         stub = fxgb_pb2_grpc.FXGBWorkerStub(channel)
         stub.Init(fxgb_pb2.InitRequest(dmlc_vars=dmlc_vars))
-        stub.Train(fxgb_pb2.TrainRequest())
+        stub.Train(fxgb_pb2.StartRequest(path=path_to_script))
 
 
 def submit(args):
@@ -42,7 +44,7 @@ def submit(args):
     hosts = [host.strip() for host in tmp if len(host.strip()) > 0]
 
     # When submit is called, the workers are assumed to have run 'grpc_worker.py'.
-    def gRPC_submit(nworker, nserver, pass_envs):      
+    def grpc_submit(nworker, nserver, pass_envs):      
         for i in range(nworker):
             worker = hosts[i]
             print('connecting to worker | ip:port | -', worker)
@@ -57,13 +59,15 @@ def submit(args):
                 DMLC_NUM_SERVER=pass_envs['DMLC_NUM_SERVER'],
             )
 
+            path_to_script = args.command
+
             # spawn thread to call RPC
-            thread = Thread(target=run, args=(worker, dmlc_vars))
+            thread = Thread(target=run, args=(worker, dmlc_vars, path_to_script))
             thread.setDaemon(True)
             thread.start()
 
     tracker.submit(args.num_workers,
                    args.num_servers,
-                   fun_submit=gRPC_submit,
+                   fun_submit=grpc_submit,
                    hostIP=args.host_ip,
                 )
