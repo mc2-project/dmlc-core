@@ -34,7 +34,7 @@ def run(worker, dmlc_vars, path_to_script):
     #  with grpc.secure_channel(worker, creds) as channel:
     with grpc.insecure_channel(worker) as channel:
         stub = fxgb_pb2_grpc.FXGBWorkerStub(channel)
-        stub.Init(fxgb_pb2.InitRequest(rabit_config=dmlc_vars))
+        stub.Init(fxgb_pb2.InitRequest(dmlc_vars=dmlc_vars))
         stub.Train(fxgb_pb2.StartRequest(path=path_to_script))
 
 
