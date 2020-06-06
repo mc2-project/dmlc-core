@@ -8,7 +8,6 @@ from multiprocessing import Pool, Process
 import os, subprocess, logging
 from threading import Thread
 import sys
-import json
 import grpc
 
 # FIXME: is there a better way to import fxgb_pb2?
