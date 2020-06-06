@@ -8,16 +8,18 @@ from multiprocessing import Pool, Process
 import os, subprocess, logging
 from threading import Thread
 import sys
-
+import json
 import grpc
 
 # FIXME: is there a better way to import fxgb_pb2?
-sys.path.insert(0,'../../../python-package/xgboost/rpc')
+current_dir = os.path.dirname(os.path.realpath(__file__))
+rpc_dir = "/../../../python-package/xgboost/rpc"
+sys.path.append(os.path.realpath(current_dir + rpc_dir))
 
+from . import tracker
+#  import _credentials
 import fxgb_pb2
 import fxgb_pb2_grpc
-import tracker
-import _credentials
 
 
 def run(worker, dmlc_vars, path_to_script):
@@ -28,11 +30,11 @@ def run(worker, dmlc_vars, path_to_script):
         worker - string that is IP:PORT format
         dmlc_vars - environment variables
     '''
-    creds = grpc.ssl_channel_credentials(_credentials.ROOT_CERTIFICATE)
+    #  creds = grpc.ssl_channel_credentials(_credentials.ROOT_CERTIFICATE)
     #  with grpc.secure_channel(worker, creds) as channel:
     with grpc.insecure_channel(worker) as channel:
         stub = fxgb_pb2_grpc.FXGBWorkerStub(channel)
-        stub.Init(fxgb_pb2.InitRequest(dmlc_vars=dmlc_vars))
+        stub.Init(fxgb_pb2.InitRequest(rabit_config=dmlc_vars))
         stub.Train(fxgb_pb2.StartRequest(path=path_to_script))
 
 
@@ -59,7 +61,7 @@ def submit(args):
                 DMLC_NUM_SERVER=pass_envs['DMLC_NUM_SERVER'],
             )
 
-            path_to_script = args.command
+            path_to_script = args.command[0]
 
             # spawn thread to call RPC
             thread = Thread(target=run, args=(worker, dmlc_vars, path_to_script))

@@ -9,7 +9,7 @@ from . import sge
 from . import yarn
 from . import mesos
 from . import ssh
-#  from . import rpc
+from . import rpc
 
 def config_logger(args):
     """Configure the logger according to the arguments
