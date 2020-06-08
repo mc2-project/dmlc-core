@@ -12,7 +12,7 @@ import grpc
 
 # FIXME: is there a better way to import fxgb_pb2?
 current_dir = os.path.dirname(os.path.realpath(__file__))
-rpc_dir = "/../../../python-package/xgboost/rpc"
+rpc_dir = "/../../../python-package/federatedxgboost/rpc"
 sys.path.append(os.path.realpath(current_dir + rpc_dir))
 
 from . import tracker
